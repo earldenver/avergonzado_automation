@@ -1,0 +1,1113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Router Diagnostics | Network Command Center</title>
+
+    <style>
+        /* ==============================
+           ARMY GREEN NETWORK DASHBOARD
+        ============================== */
+
+        :root {
+            --army: #4B5320;
+            --army-dark: #283618;
+            --olive: #606C38;
+            --olive-light: #87945A;
+            --cream: #F5F5E9;
+            --white: #FFFFFF;
+            --border: #DCE2CB;
+            --text: #29301E;
+            --muted: #78816B;
+            --success: #5C8A45;
+            --warning: #C18B35;
+            --dark-panel: #172116;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #EEF0E5;
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        /* MAIN LAYOUT */
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 250px;
+            background: var(--army-dark);
+            color: white;
+            padding: 28px 20px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 8px 35px;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: var(--olive);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .brand h2 {
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        .brand p {
+            font-size: 10px;
+            color: #B9C4A1;
+            margin-top: 3px;
+            letter-spacing: 1.5px;
+        }
+
+        .menu-label {
+            font-size: 10px;
+            color: #A9B393;
+            letter-spacing: 2px;
+            padding: 0 10px;
+            margin-bottom: 14px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            margin-bottom: 8px;
+            border-radius: 9px;
+            color: #D6DDC8;
+            font-size: 13px;
+        }
+
+        .menu-item.active {
+            background: var(--olive);
+            color: white;
+            border-left: 4px solid #D5E0A8;
+        }
+
+        .menu-icon {
+            font-size: 17px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            background: #344225;
+            border: 1px solid #536342;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .sidebar-bottom p {
+            font-size: 11px;
+            color: #CBD5BB;
+            line-height: 1.7;
+        }
+
+        .sidebar-bottom strong {
+            color: white;
+            font-size: 12px;
+        }
+
+        /* MAIN CONTENT */
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 30px 35px;
+        }
+
+        /* TOP BAR */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .topbar h1 {
+            font-size: 25px;
+            color: var(--army-dark);
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .system-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 10px 14px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            font-size: 11px;
+            color: var(--army);
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px #E5EFDD;
+        }
+
+        /* WELCOME BANNER */
+
+        .welcome-banner {
+            background: linear-gradient(115deg, #283618, #4B5320);
+            color: white;
+            padding: 27px 30px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .welcome-banner::after {
+            content: "⌘";
+            position: absolute;
+            right: 35px;
+            top: -35px;
+            font-size: 150px;
+            color: rgba(255,255,255,0.06);
+        }
+
+        .welcome-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-text small {
+            color: #D2DDB7;
+            letter-spacing: 2px;
+            font-size: 10px;
+        }
+
+        .welcome-text h2 {
+            font-size: 23px;
+            margin: 9px 0;
+        }
+
+        .welcome-text p {
+            color: #D6DEC9;
+            font-size: 12px;
+        }
+
+        .banner-tag {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 9px;
+            padding: 12px 16px;
+            font-size: 11px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* DEVICE CARDS */
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-heading h3 {
+            font-size: 16px;
+            color: var(--army-dark);
+        }
+
+        .section-heading span {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+
+        .device-card {
+            background: white;
+            padding: 19px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            box-shadow: 0 3px 12px rgba(40,54,24,0.03);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            width: 37px;
+            height: 37px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #EEF1E4;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+
+        .card-label {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .card-value {
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--army-dark);
+            word-break: break-word;
+        }
+
+        .card-description {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        /* CONTENT GRID */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 3px 12px rgba(40,54,24,0.03);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h3 {
+            color: var(--army-dark);
+            font-size: 15px;
+        }
+
+        .panel-header span {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        /* CONFIGURATION FORM */
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #596442;
+            margin-bottom: 7px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            background: #FAFBF6;
+            color: var(--text);
+            border-radius: 8px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--olive);
+            box-shadow: 0 0 0 3px rgba(96,108,56,0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* COMMAND LIST */
+
+        .command-heading {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--army-dark);
+            margin: 20px 0 12px;
+        }
+
+        .command-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px;
+            background: #F7F8F1;
+            border: 1px solid #E9EDDF;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .command-check {
+            accent-color: var(--army);
+            width: 15px;
+            height: 15px;
+        }
+
+        .command-item code {
+            font-size: 11px;
+            color: #47552E;
+        }
+
+        .run-button {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            background: var(--army);
+            color: white;
+            font-weight: 700;
+            border-radius: 9px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .run-button:hover {
+            background: var(--army-dark);
+            transform: translateY(-1px);
+        }
+
+        .run-button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* RESULTS */
+
+        .results-panel {
+            min-height: 430px;
+        }
+
+        .result-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #EDF4E8;
+            color: #50743D;
+            padding: 7px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .result-status.running {
+            background: #FFF4DC;
+            color: #9A6B1D;
+        }
+
+        .result-status.error {
+            background: #FCEAEA;
+            color: #A23D3D;
+        }
+
+        .result-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .empty-state {
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            font-size: 40px;
+            margin-bottom: 14px;
+        }
+
+        .empty-state h4 {
+            color: var(--army-dark);
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .empty-state p {
+            font-size: 11px;
+            max-width: 230px;
+            line-height: 1.7;
+        }
+
+        /* RESULT ITEMS */
+
+        .result-item {
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .result-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 13px;
+            background: #F7F8F1;
+            cursor: pointer;
+        }
+
+        .result-title code {
+            font-size: 11px;
+            color: var(--army-dark);
+            font-weight: 600;
+        }
+
+        .result-title span {
+            font-size: 15px;
+            color: var(--olive);
+        }
+
+        .result-output {
+            display: none;
+            padding: 14px;
+            background: var(--dark-panel);
+            color: #C8D9B9;
+            overflow-x: auto;
+        }
+
+        .result-output.show {
+            display: block;
+        }
+
+        .result-output pre {
+            font-family: Consolas, monospace;
+            font-size: 10px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 25px;
+            padding: 15px 0;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1000px) {
+            .device-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 65px;
+                padding: 20px 10px;
+            }
+
+            .brand {
+                justify-content: center;
+                padding: 5px 0 30px;
+            }
+
+            .brand-text,
+            .menu-label,
+            .menu-text,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .menu-item {
+                justify-content: center;
+                padding: 13px 5px;
+            }
+
+            .main {
+                padding: 20px 14px;
+            }
+
+            .topbar h1 {
+                font-size: 19px;
+            }
+
+            .device-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-banner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .banner-tag {
+                display: none;
+            }
+
+            .footer {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">⌘</div>
+            <div class="brand-text">
+                <h2>NETCONTROL</h2>
+                <p>NETWORK SYSTEMS</p>
+            </div>
+        </div>
+
+        <div class="menu-label">WORKSPACE</div>
+
+        <div class="menu-item active">
+            <span class="menu-icon">▦</span>
+            <span class="menu-text">Dashboard</span>
+        </div>
+
+        <div class="menu-item">
+            <span class="menu-icon">◈</span>
+            <span class="menu-text">Router Diagnostics</span>
+        </div>
+
+        <div class="menu-item">
+            <span class="menu-icon">⌘</span>
+            <span class="menu-text">Command Center</span>
+        </div>
+
+        <div class="menu-item">
+            <span class="menu-icon">▤</span>
+            <span class="menu-text">Diagnostic Reports</span>
+        </div>
+
+        <div class="sidebar-bottom">
+            <strong>LAB ENVIRONMENT</strong>
+            <p>EVE-NG Virtual Network</p>
+            <p>Environment: Development</p>
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div>
+                <div class="breadcrumb">
+                    Workspace / Network Management / Diagnostics
+                </div>
+                <h1>Router Diagnostics</h1>
+            </div>
+
+            <div class="top-right">
+                <div class="system-badge">
+                    <span class="live-dot"></span>
+                    SYSTEM READY
+                </div>
+            </div>
+
+        </header>
+
+        <!-- WELCOME BANNER -->
+        <section class="welcome-banner">
+
+            <div class="welcome-text">
+                <small>NETWORK OPERATIONS CENTER</small>
+                <h2>Network Command Center</h2>
+                <p>Monitor, inspect, and diagnose your Cisco router in the EVE-NG lab.</p>
+            </div>
+
+            <div class="banner-tag">
+                ◈ &nbsp; ROUTER MONITORING
+            </div>
+
+        </section>
+
+        <!-- DEVICE OVERVIEW -->
+        <div class="section-heading">
+            <h3>Device Overview</h3>
+            <span>Current configuration</span>
+        </div>
+
+        <section class="device-grid">
+
+            <div class="device-card">
+                <div class="card-top">
+                    <div class="card-icon">▣</div>
+                    <span class="card-label">DEVICE ADDRESS</span>
+                </div>
+                <div class="card-value" id="overviewIP">192.168.10.122</div>
+                <div class="card-description">Router IP address</div>
+            </div>
+
+            <div class="device-card">
+                <div class="card-top">
+                    <div class="card-icon">⌁</div>
+                    <span class="card-label">CONSOLE PORT</span>
+                </div>
+                <div class="card-value" id="overviewPort">32770</div>
+                <div class="card-description">Telnet connection port</div>
+            </div>
+
+            <div class="device-card">
+                <div class="card-top">
+                    <div class="card-icon">◉</div>
+                    <span class="card-label">PROTOCOL</span>
+                </div>
+                <div class="card-value" id="overviewProtocol">TELNET</div>
+                <div class="card-description">Remote console protocol</div>
+            </div>
+
+        </section>
+
+        <!-- MAIN CONTENT -->
+        <section class="content-grid">
+
+            <!-- CONFIGURATION PANEL -->
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h3>Connection Settings</h3>
+                    <span>DEVICE CONFIG</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="deviceIP">Device IP Address</label>
+                    <input
+                        type="text"
+                        id="deviceIP"
+                        value="192.168.10.122"
+                        placeholder="Enter router IP address"
+                    >
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="devicePort">Console Port</label>
+                        <input
+                            type="number"
+                            id="devicePort"
+                            value="32778"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="protocol">Protocol</label>
+                        <select id="protocol">
+                            <option value="Telnet">Telnet</option>
+                            <option value="SSH">SSH</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="command-heading">
+                    SELECT DIAGNOSTIC COMMANDS
+                </div>
+
+                <label class="command-item">
+                    <input
+                        type="checkbox"
+                        class="command-check"
+                        value="version"
+                        checked
+                    >
+                    <code>show version</code>
+                </label>
+
+                <label class="command-item">
+                    <input
+                        type="checkbox"
+                        class="command-check"
+                        value="interfaces"
+                        checked
+                    >
+                    <code>show ip interface brief</code>
+                </label>
+
+                <label class="command-item">
+                    <input
+                        type="checkbox"
+                        class="command-check"
+                        value="running"
+                        checked
+                    >
+                    <code>show running-config</code>
+                </label>
+
+                <button
+                    class="run-button"
+                    id="runButton"
+                    onclick="runDiagnostics()"
+                >
+                    ▶ &nbsp; RUN DIAGNOSTICS
+                </button>
+
+            </div>
+
+            <!-- RESULTS PANEL -->
+            <div class="panel results-panel">
+
+                <div class="panel-header">
+                    <h3>Diagnostic Results</h3>
+
+                    <div class="result-status" id="resultStatus">
+                        <span class="dot"></span>
+                        READY
+                    </div>
+                </div>
+
+                <div id="resultsContainer">
+
+                    <div class="empty-state">
+                        <div class="empty-icon">⌘</div>
+                        <h4>Waiting for Diagnostics</h4>
+                        <p>
+                            Select your diagnostic commands and click
+                            Run Diagnostics to view router information.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <span>NETCONTROL © 2026 | Router Diagnostics System</span>
+            <span>Environment: EVE-NG Virtual Lab</span>
+        </footer>
+
+    </main>
+
+</div>
+
+<script>
+    /* ==============================
+       ROUTER DIAGNOSTICS JAVASCRIPT
+    ============================== */
+
+    const sampleOutputs = {
+
+        version: `Cisco IOS Software, Version 15.2(4)M
+Technical Support: http://www.cisco.com/techsupport
+
+ROM: System Bootstrap, Version 15.2
+
+Router uptime is 2 hours, 15 minutes
+
+System image file is "flash:c2900-universalk9-mz"
+
+Cisco CISCO2911/K9 processor
+131072K bytes of memory
+
+Configuration register is 0x2102`,
+
+        interfaces: `Interface              IP-Address      OK? Method Status
+GigabitEthernet0/0     192.168.10.1    YES manual up
+GigabitEthernet0/1     10.0.0.1        YES manual up
+GigabitEthernet0/2     unassigned      YES unset  administratively down
+Loopback0              1.1.1.1         YES manual up`,
+
+        running: `Building configuration...
+
+Current configuration : 1250 bytes
+
+version 15.2
+hostname Router
+
+interface GigabitEthernet0/0
+ description LAN Interface
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+
+interface GigabitEthernet0/1
+ description WAN Interface
+ ip address 10.0.0.1 255.255.255.252
+ no shutdown
+
+ip route 0.0.0.0 0.0.0.0 10.0.0.2
+
+end`
+    };
+
+    const commandNames = {
+        version: "show version",
+        interfaces: "show ip interface brief",
+        running: "show running-config"
+    };
+
+    /* UPDATE DEVICE OVERVIEW */
+
+    function updateDeviceOverview() {
+
+        const ip = document.getElementById("deviceIP").value;
+        const port = document.getElementById("devicePort").value;
+        const protocol = document.getElementById("protocol").value;
+
+        document.getElementById("overviewIP").textContent =
+            ip || "Not configured";
+
+        document.getElementById("overviewPort").textContent =
+            port || "Not configured";
+
+        document.getElementById("overviewProtocol").textContent =
+            protocol.toUpperCase();
+    }
+
+    document.getElementById("deviceIP").addEventListener(
+        "input", updateDeviceOverview
+    );
+
+    document.getElementById("devicePort").addEventListener(
+        "input", updateDeviceOverview
+    );
+
+    document.getElementById("protocol").addEventListener(
+        "change", updateDeviceOverview
+    );
+
+    /* STATUS DISPLAY */
+
+    function setStatus(message, type = "") {
+
+        const status = document.getElementById("resultStatus");
+
+        status.className = "result-status";
+
+        if (type) {
+            status.classList.add(type);
+        }
+
+        status.innerHTML =
+            `<span class="dot"></span>${message}`;
+    }
+
+    /* RUN DIAGNOSTICS */
+
+    function runDiagnostics() {
+
+        const ip = document.getElementById("deviceIP").value.trim();
+        const port = document.getElementById("devicePort").value;
+        const protocol = document.getElementById("protocol").value;
+
+        const selectedCommands = Array.from(
+            document.querySelectorAll(".command-check:checked")
+        ).map(item => item.value);
+
+        const resultsContainer =
+            document.getElementById("resultsContainer");
+
+        const runButton = document.getElementById("runButton");
+
+        if (!ip || !port) {
+            alert("Please enter the router IP address and console port.");
+            return;
+        }
+
+        if (selectedCommands.length === 0) {
+            alert("Please select at least one diagnostic command.");
+            return;
+        }
+
+        updateDeviceOverview();
+
+        runButton.disabled = true;
+        runButton.textContent = "⏳ RUNNING DIAGNOSTICS...";
+
+        setStatus("RUNNING", "running");
+
+        resultsContainer.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⏳</div>
+                <h4>Running Diagnostics</h4>
+                <p>Processing selected commands. Please wait...</p>
+            </div>
+        `;
+
+        /*
+          DEMO MODE:
+          The timeout simulates command execution.
+          Replace this section with a fetch() request
+          when connecting your Python Flask backend.
+        */
+
+        setTimeout(() => {
+
+            let outputHTML = "";
+
+            selectedCommands.forEach((command, index) => {
+
+                const output = sampleOutputs[command];
+                const commandName = commandNames[command];
+                const resultID = "output-" + index;
+
+                outputHTML += `
+                    <div class="result-item">
+
+                        <div class="result-title"
+                             onclick="toggleResult('${resultID}')">
+
+                            <code>▸ ${commandName}</code>
+                            <span id="arrow-${index}">＋</span>
+
+                        </div>
+
+                        <div class="result-output" id="${resultID}">
+                            <pre>${escapeHTML(output)}</pre>
+                        </div>
+
+                    </div>
+                `;
+            });
+
+            resultsContainer.innerHTML = outputHTML;
+
+            setStatus("COMPLETED");
+
+            runButton.disabled = false;
+            runButton.innerHTML = "▶ &nbsp; RUN DIAGNOSTICS";
+
+        }, 2000);
+    }
+
+    /* ESCAPE OUTPUT TEXT */
+
+    function escapeHTML(value) {
+
+        return value.replace(/[&<>"']/g, function(character) {
+            const entities = {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            };
+
+            return entities[character];
+        });
+    }
+
+    /* EXPAND / COLLAPSE RESULTS */
+
+    function toggleResult(id) {
+
+        const output = document.getElementById(id);
+
+        if (!output) return;
+
+        const wasOpen = output.classList.contains("show");
+
+        output.classList.toggle("show");
+
+        const index = id.split("-")[1];
+        const arrow = document.getElementById("arrow-" + index);
+
+        if (arrow) {
+            arrow.textContent = wasOpen ? "＋" : "−";
+        }
+    }
+
+</script>
+
+</body>
+</html>
