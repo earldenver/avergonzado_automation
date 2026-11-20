@@ -1,8 +1,7 @@
-from flask import flask, render_template, request
 from flask import Flask, render_template, request
 from netmiko import ConnectHandler
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='RouterDiagnostics')
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -13,7 +12,7 @@ def index():
     if request.method == 'POST':
         router_device = {
             'device_type': 'cisco_ios_telnet',
-            'ip': '192.168.10.122',
+            'ip': '192.168.10.65',
             'port': 32770,
             'username': 'admin',
             'password': 'eve123',
