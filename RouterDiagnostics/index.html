@@ -7,23 +7,20 @@
     <title>Router Diagnostics | Network Command Center</title>
 
     <style>
-        /* ==============================
-           ARMY GREEN NETWORK DASHBOARD
-        ============================== */
 
         :root {
-            --army: #4B5320;
-            --army-dark: #283618;
-            --olive: #606C38;
-            --olive-light: #87945A;
-            --cream: #F5F5E9;
+            --army: #7C3AED;
+            --army-dark: #3B0764;
+            --olive: #8B5CF6;
+            --olive-light: #A78BFA;
+            --cream: #FAF5FF;
             --white: #FFFFFF;
-            --border: #DCE2CB;
-            --text: #29301E;
-            --muted: #78816B;
+            --border: #DDD6FE;
+            --text: #2E1065;
+            --muted: #7C6F92;
             --success: #5C8A45;
             --warning: #C18B35;
-            --dark-panel: #172116;
+            --dark-panel: #1E1033;
         }
 
         * {
@@ -34,7 +31,7 @@
 
         body {
             font-family: "Segoe UI", Arial, sans-serif;
-            background: #EEF0E5;
+            background: #F5F3FF;
             color: var(--text);
             min-height: 100vh;
         }
@@ -114,7 +111,7 @@
         .menu-item.active {
             background: var(--olive);
             color: white;
-            border-left: 4px solid #D5E0A8;
+            border-left: 4px solid #DDD6FE;
         }
 
         .menu-icon {
@@ -123,15 +120,15 @@
 
         .sidebar-bottom {
             margin-top: auto;
-            background: #344225;
-            border: 1px solid #536342;
+            background: #4C1D95;
+            border: 1px solid #6D28D9;
             border-radius: 12px;
             padding: 15px;
         }
 
         .sidebar-bottom p {
             font-size: 11px;
-            color: #CBD5BB;
+            color: #EDE9FE;
             line-height: 1.7;
         }
 
@@ -193,13 +190,13 @@
             height: 8px;
             background: var(--success);
             border-radius: 50%;
-            box-shadow: 0 0 0 4px #E5EFDD;
+            box-shadow: 0 0 0 4px #EDE9FE;
         }
 
         /* WELCOME BANNER */
 
         .welcome-banner {
-            background: linear-gradient(115deg, #283618, #4B5320);
+            background: linear-gradient(115deg, #3B0764, #7C3AED);
             color: white;
             padding: 27px 30px;
             border-radius: 16px;
@@ -227,7 +224,7 @@
         }
 
         .welcome-text small {
-            color: #D2DDB7;
+            color: #DDD6FE;
             letter-spacing: 2px;
             font-size: 10px;
         }
@@ -238,7 +235,7 @@
         }
 
         .welcome-text p {
-            color: #D6DEC9;
+            color: #EDE9FE;
             font-size: 12px;
         }
 
@@ -283,7 +280,7 @@
             padding: 19px;
             border: 1px solid var(--border);
             border-radius: 13px;
-            box-shadow: 0 3px 12px rgba(40,54,24,0.03);
+            box-shadow: 0 3px 12px rgba(76,29,149,0.06);
         }
 
         .card-top {
@@ -299,7 +296,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #EEF1E4;
+            background: #F5F3FF;
             border-radius: 10px;
             font-size: 18px;
         }
@@ -336,7 +333,7 @@
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 22px;
-            box-shadow: 0 3px 12px rgba(40,54,24,0.03);
+            box-shadow: 0 3px 12px rgba(76,29,149,0.06);
         }
 
         .panel-header {
@@ -366,7 +363,7 @@
             display: block;
             font-size: 11px;
             font-weight: 600;
-            color: #596442;
+            color: #5B21B6;
             margin-bottom: 7px;
         }
 
@@ -375,7 +372,7 @@
             width: 100%;
             padding: 12px;
             border: 1px solid var(--border);
-            background: #FAFBF6;
+            background: #FAF5FF;
             color: var(--text);
             border-radius: 8px;
             font-size: 12px;
@@ -385,7 +382,7 @@
         .form-group input:focus,
         .form-group select:focus {
             border-color: var(--olive);
-            box-shadow: 0 0 0 3px rgba(96,108,56,0.1);
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.14);
         }
 
         .form-row {
@@ -408,8 +405,8 @@
             align-items: center;
             gap: 10px;
             padding: 11px;
-            background: #F7F8F1;
-            border: 1px solid #E9EDDF;
+            background: #FAF5FF;
+            border: 1px solid #E9D5FF;
             border-radius: 8px;
             margin-bottom: 8px;
         }
@@ -422,7 +419,7 @@
 
         .command-item code {
             font-size: 11px;
-            color: #47552E;
+            color: #5B21B6;
         }
 
         .run-button {
@@ -460,8 +457,8 @@
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            background: #EDF4E8;
-            color: #50743D;
+            background: #EDE9FE;
+            color: #6D28D9;
             padding: 7px 10px;
             border-radius: 20px;
             font-size: 10px;
@@ -527,7 +524,7 @@
             align-items: center;
             gap: 10px;
             padding: 13px;
-            background: #F7F8F1;
+            background: #FAF5FF;
             cursor: pointer;
         }
 
@@ -546,7 +543,7 @@
             display: none;
             padding: 14px;
             background: var(--dark-panel);
-            color: #C8D9B9;
+            color: #DDD6FE;
             overflow-x: auto;
         }
 
@@ -732,7 +729,7 @@
                     <div class="card-icon">▣</div>
                     <span class="card-label">DEVICE ADDRESS</span>
                 </div>
-                <div class="card-value" id="overviewIP">192.168.10.122</div>
+                <div class="card-value" id="overviewIP">192.168.10.65</div>
                 <div class="card-description">Router IP address</div>
             </div>
 
@@ -772,7 +769,7 @@
                     <input
                         type="text"
                         id="deviceIP"
-                        value="192.168.10.122"
+                        value="192.168.10.65"
                         placeholder="Enter router IP address"
                     >
                 </div>
@@ -784,7 +781,7 @@
                         <input
                             type="number"
                             id="devicePort"
-                            value="32778"
+                            value="32770"
                         >
                     </div>
 
@@ -1024,50 +1021,81 @@ end`
             </div>
         `;
 
-        /*
-          DEMO MODE:
-          The timeout simulates command execution.
-          Replace this section with a fetch() request
-          when connecting your Python Flask backend.
-        */
+        fetch("/api/diagnostics", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                ip: ip,
+                port: port,
+                protocol: protocol,
+                commands: selectedCommands
+            })
+        })
+            .then(async (response) => {
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || "Diagnostics request failed.");
+                }
+                return data.results;
+            })
+            .then((results) => {
+                let outputHTML = "";
 
-        setTimeout(() => {
+                selectedCommands.forEach((command, index) => {
+                    const output = results[command];
+                    if (output === undefined) return;
 
-            let outputHTML = "";
+                    const commandName = commandNames[command];
+                    const resultID = "output-" + index;
 
-            selectedCommands.forEach((command, index) => {
-
-                const output = sampleOutputs[command];
-                const commandName = commandNames[command];
-                const resultID = "output-" + index;
-
-                outputHTML += `
-                    <div class="result-item">
-
-                        <div class="result-title"
-                             onclick="toggleResult('${resultID}')">
-
-                            <code>▸ ${commandName}</code>
-                            <span id="arrow-${index}">＋</span>
-
+                    outputHTML += `
+                        <div class="result-item">
+                            <div class="result-title"
+                                 onclick="toggleResult('${resultID}')">
+                                <code>▸ ${commandName}</code>
+                                <span id="arrow-${index}">＋</span>
+                            </div>
+                            <div class="result-output" id="${resultID}">
+                                <pre>${escapeHTML(output)}</pre>
+                            </div>
                         </div>
+                    `;
+                });
 
-                        <div class="result-output" id="${resultID}">
-                            <pre>${escapeHTML(output)}</pre>
+                resultsContainer.innerHTML = outputHTML;
+                setStatus("COMPLETED");
+            })
+            .catch((error) => {
+                let outputHTML = "";
+
+                selectedCommands.forEach((command, index) => {
+                    const output = sampleOutputs[command];
+                    if (output === undefined) return;
+
+                    const commandName = commandNames[command];
+                    const resultID = "output-" + index;
+
+                    outputHTML += `
+                        <div class="result-item">
+                            <div class="result-title"
+                                 onclick="toggleResult('${resultID}')">
+                                <code>▸ ${commandName}</code>
+                                <span id="arrow-${index}">＋</span>
+                            </div>
+                            <div class="result-output" id="${resultID}">
+                                <pre>${escapeHTML(output)}</pre>
+                            </div>
                         </div>
+                    `;
+                });
 
-                    </div>
-                `;
+                resultsContainer.innerHTML = outputHTML;
+                setStatus("DEMO RESULTS");
+            })
+            .finally(() => {
+                runButton.disabled = false;
+                runButton.innerHTML = "▶ &nbsp; RUN DIAGNOSTICS";
             });
-
-            resultsContainer.innerHTML = outputHTML;
-
-            setStatus("COMPLETED");
-
-            runButton.disabled = false;
-            runButton.innerHTML = "▶ &nbsp; RUN DIAGNOSTICS";
-
-        }, 2000);
     }
 
     /* ESCAPE OUTPUT TEXT */
